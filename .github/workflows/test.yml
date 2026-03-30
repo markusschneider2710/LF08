@@ -1,0 +1,29 @@
+name: Quiz-Spiel Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    name: Testen
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Code auschecken
+        uses: actions/checkout@v4
+
+      - name: Node installieren
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Dependencies installieren
+        run: npm ci
+
+      - name: Tests ausführen
+        run: npm test
+
+      - name: Build ausführen
+        run: npm run build
