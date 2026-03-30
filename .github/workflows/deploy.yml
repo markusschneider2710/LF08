@@ -1,4 +1,4 @@
-name: Python Quiz Deploy
+name: Quiz-Spiel Pipeline
 
 on:
   push:
