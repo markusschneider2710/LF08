@@ -1,4 +1,4 @@
-name: Quiz-Spiel Pipeline
+name: Docker Deploy
 
 on:
   push:
@@ -12,22 +12,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-      - name: Verify app
-        run: python -m py_compile app.py
-
-      - name: Prepare deploy files
-        run: |
-          mkdir deploy
-          cp app.py deploy/
-          echo "Deployment package created"
-
-      - name: Upload deploy artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: quiz-app
-          path: deploy/
+      - name: Build Docker image
+        run: docker build -t quiz-app .
