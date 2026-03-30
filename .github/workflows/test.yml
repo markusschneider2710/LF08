@@ -2,28 +2,25 @@ name: Quiz-Spiel Pipeline
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
   test:
-    name: Testen
     runs-on: ubuntu-latest
 
     steps:
-      - name: Code auschecken
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Node installieren
-        uses: actions/setup-node@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          node-version: 20
+          python-version: "3.12"
 
-      - name: Dependencies installieren
-        run: npm ci
+      - name: Check syntax
+        run: python -m py_compile app.py
 
-      - name: Tests ausführen
-        run: npm test
-
-      - name: Build ausführen
-        run: npm run build
+      - name: Smoke test import
+        run: python -c "import app; app.init_db(); print('OK')"
